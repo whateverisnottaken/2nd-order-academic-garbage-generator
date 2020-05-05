@@ -1,6 +1,7 @@
 # encoding:utf-8
 __author__ = 'Zhaozitian'
 
+import nlp.handle
 from tkinter import *
 import tkinter as tk
 import tkinter.messagebox as messagebox
@@ -10,7 +11,7 @@ import queue
 
 gui_que = queue.Queue()
 
-class Application(threading.Thread):
+class Generator(threading.Thread):
 
 	def __init__(self, root):
 		threading.Thread.__init__(self)
@@ -57,11 +58,11 @@ class Application(threading.Thread):
 		self.createFrameBottom()
 		self.progress = 'Downloading...'
 		if self.name == '':
-			messagebox.showwarning('Warning', 'Keyword is empty!')
+			messagebox.showwarning('Warning', 'It seems like you didn\'t enter the blog name...')
 		elif not self.num.isdigit():
-			messagebox.showwarning('Warning', 'Thread num is invalid!')
+			messagebox.showwarning('Warning', 'It seems like that \'' + self.num + '\' isn\'t a good  number...')
 		elif int(self.num) == 0:
-			messagebox.showwarning('Warning', '0 is not a good amount of threads...')
+			messagebox.showwarning('Warning', 'Nope. I think 0 threads is too few.')
 		else:
 			gui_que.put(self.name)
 			self.progress += 'please wait...'
@@ -95,7 +96,7 @@ if __name__ == '__main__':
 	root = tk.Tk()
 	root.title('Csdn_Blog_Download_Tool')
 	center_window()
-	t = Application(root)
+	t = Generator(root)
 	t.setDaemon(True)
 	t.start()
 	root.mainloop()
